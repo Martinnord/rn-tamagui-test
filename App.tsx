@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
+import { SafeAreaView, useColorScheme } from "react-native";
+import { TamaguiProvider, Theme } from "tamagui";
+
+import config from "./tamagui.config";
+import { Center, LoginForm } from "./components";
 
 export default function App() {
+  const colorScheme = useColorScheme();
+  const [loaded] = useFonts({
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <TamaguiProvider config={config}>
+      <Theme name={colorScheme === "dark" ? "dark" : "light"}>
+        <SafeAreaView>
+          <StatusBar style="auto" />
+          <Center height="100%">
+            <LoginForm />
+          </Center>
+        </SafeAreaView>
+      </Theme>
+    </TamaguiProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
